@@ -17,6 +17,9 @@
     },
     "homepage": "",
     "dependencies": {
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.3",
+        "express": "^4.21.2",
         "mongodb": "^6.11.0"
     }
 }
