@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // MongoDB connection
-const uri = process.env.MONGODB_URI; // Use environment variable for security
+const uri = "mongodb+srv://shelfuser:Soccer123@cluster0.smdvj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri);
 
 // Middleware
