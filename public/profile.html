@@ -35,13 +35,14 @@
 
     <script src="footer.js"></script>
     <script>
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const storedUser = localStorage.getItem('currentUser');
+        const currentUser = storedUser ? JSON.parse(storedUser) : null;
+
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            if (!currentUser) {
-                window.location.href = 'index.html';
-            }
-
             const response = await fetch(`/profile?username=${currentUser.username}`);
             if (response.ok) {
                 const profile = await response.json();
