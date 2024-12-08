@@ -1,0 +1,22 @@
+{
+    "name": "example app",
+    "version": "1.0.0",
+    "description": "node app ",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://bt-cs20-123-78cc60885005.herokuapp.com/"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "mongodb": "^6.11.0"
+    }
+}
