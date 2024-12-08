@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Profile page">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShelfShare | FAQs</title>
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+/*       padding: 20px; */
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    .bio-section, .books-section, .locations-section {
+      background-color: #ffffff;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .section-title {
+      font-size: 18px;
+      color: #34495e;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #2980b9;
+      padding-bottom: 5px;
+    }
+    .bio-content {
+      font-size: 16px;
+      color: #7f8c8d;
+    }
+    .list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 0;
+      padding: 10px;
+      background-color: #ecf0f1;
+      border-radius: 5px;
+    }
+    .list li .book-title {
+      font-weight: bold;
+      color: #2980b9;
+      flex-grow: 1;
+      text-align: left;
+    }
+    .hold-button {
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #3498db;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .hold-button:disabled {
+      background-color: #bdc3c7;
+      cursor: not-allowed;
+    }
+    .hold-button:hover:not(:disabled) {
+      background-color: #2980b9;
+    }
+  </style>
+  <!-- Header -->
+  <script src="header.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>User Profile: John Doe</h1>
+    
+    <!-- Bio Section -->
+    <div class="bio-section">
+      <h2 class="section-title">Bio</h2>
+      <p class="bio-content">Hi! I'm John, an avid book lover based in Boston. I enjoy swapping books with fellow readers and discovering new titles through Shelf Share. When I'm not reading, you can find me hiking or experimenting with new recipes.</p>
+    </div>
+    
+    <!-- Books Section -->
+    <div class="books-section">
+        <h2 class="section-title">John's Shelf</h2>
+        <ul class="list">
+          <li>
+            <span class="book-title">The Great Gatsby</span>
+            <button class="hold-button">Place Hold</button>
+          </li>
+          <li>
+            <span class="book-title">Pride and Prejudice</span>
+            <button class="hold-button">Place Hold</button>
+          </li>
+          <li>
+            <span class="book-title">1984</span>
+            <button class="hold-button">Place Hold</button>
+          </li>
+          <li>
+            <span class="book-title">To Kill a Mockingbird</span>
+            <button class="hold-button" disabled>Place Hold</button>
+          </li>
+        </ul>
+      </div>
+    
+    <!-- Locations Section -->
+    <div class="locations-section">
+      <h2 class="section-title">Swap Locations</h2>
+      <ul class="list">
+        <li><span class="location-name">Boston Public Library</span></li>
+        <li><span class="location-name">Harvard Square Coffee Shop</span></li>
+        <li><span class="location-name">Somerville Community Center</span></li>
+        <li><span class="location-name">MIT Book Cafe</span></li>
+      </ul>
+    </div>
+  </div>
+  <script src="footer.js"></script>
+</body>
+</html>
