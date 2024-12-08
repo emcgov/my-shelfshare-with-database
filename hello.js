@@ -7,23 +7,27 @@ const { MongoClient } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// MongoDB connection
-const uri = "mongodb+srv://shelfuser:Soccer123@cluster0.smdvj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const client = new MongoClient(uri);
+// Use the MongoDB connection string from environment variables
+const uri = process.env.MONGODB_URI;
 
 // Middleware
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the public folder
 app.use(bodyParser.json()); // Parse JSON bodies
 
-// Database connection
+// MongoDB connection
 let usersCollection;
-client.connect().then(() => {
-  const db = client.db("final");
-  usersCollection = db.collection("users");
-  console.log("Connected to MongoDB");
-}).catch(err => {
-  console.error("Failed to connect to MongoDB:", err);
-});
+(async function connectToDatabase() {
+  try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    const db = client.db('final'); // Database name
+    usersCollection = db.collection('users'); // Collection name
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('Failed to connect to MongoDB:', err);
+    process.exit(1); // Exit the process if the connection fails
+  }
+})();
 
 // Default route: Serve the login page
 app.get('/', (req, res) => {
@@ -35,21 +39,21 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).send("Username and password are required.");
+    return res.status(400).send('Username and password are required.');
   }
 
   try {
     const existingUser = await usersCollection.findOne({ username });
     if (existingUser) {
-      return res.status(400).send("User already exists.");
+      return res.status(400).send('User already exists.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await usersCollection.insertOne({ username, password: hashedPassword });
-    res.status(201).send("User registered successfully.");
+    res.status(201).send('User registered successfully.');
   } catch (err) {
-    console.error("Error during registration:", err);
-    res.status(500).send("An error occurred during registration.");
+    console.error('Error during registration:', err);
+    res.status(500).send('An error occurred during registration.');
   }
 });
 
@@ -58,24 +62,24 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).send("Username and password are required.");
+    return res.status(400).send('Username and password are required.');
   }
 
   try {
     const user = await usersCollection.findOne({ username });
     if (!user) {
-      return res.status(400).send("Invalid username or password.");
+      return res.status(400).send('Invalid username or password.');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).send("Invalid username or password.");
+      return res.status(400).send('Invalid username or password.');
     }
 
-    res.status(200).send("Login successful.");
+    res.status(200).send('Login successful.');
   } catch (err) {
-    console.error("Error during login:", err);
-    res.status(500).send("An error occurred during login.");
+    console.error('Error during login:', err);
+    res.status(500).send('An error occurred during login.');
   }
 });
 
