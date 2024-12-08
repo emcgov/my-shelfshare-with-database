@@ -8,20 +8,26 @@
 </head>
 <body>
     <script src="header.js"></script>
-    
+
     <div class="content">
+        <!-- Profile View -->
         <div id="profileView">
             <h2>Your Profile</h2>
             <p><strong>Name:</strong> <span id="viewProfileName"></span></p>
             <p><strong>Bio:</strong> <span id="viewProfileBio"></span></p>
+            <p><strong>Address:</strong> <span id="viewProfileAddress"></span></p>
+            <p><strong>Books:</strong> <ul id="viewProfileBooks"></ul></p>
             <button onclick="showEditProfile()">Edit Profile</button>
             <a href="about.html">Go to About Page</a>
         </div>
 
+        <!-- Edit Profile -->
         <div id="profileEdit" style="display: none;">
             <h2>Edit Profile</h2>
             <input type="text" id="editProfileName" placeholder="Name">
             <textarea id="editProfileBio" placeholder="Bio"></textarea>
+            <input type="text" id="editProfileAddress" placeholder="Address">
+            <textarea id="editProfileBooks" placeholder="Books (separate by commas)"></textarea>
             <button onclick="updateProfile()">Save Profile</button>
             <button onclick="showProfileView()">Cancel</button>
         </div>
@@ -31,12 +37,29 @@
     <script>
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             if (!currentUser) {
                 window.location.href = 'index.html';
             }
-            document.getElementById('viewProfileName').innerText = currentUser.name || 'No name set';
-            document.getElementById('viewProfileBio').innerText = currentUser.bio || 'No bio set';
+
+            const response = await fetch(`/profile?username=${currentUser.username}`);
+            if (response.ok) {
+                const profile = await response.json();
+                document.getElementById('viewProfileName').innerText = profile.name || 'No name set';
+                document.getElementById('viewProfileBio').innerText = profile.bio || 'No bio set';
+                document.getElementById('viewProfileAddress').innerText = profile.address || 'No address set';
+
+                const booksUl = document.getElementById('viewProfileBooks');
+                booksUl.innerHTML = '';
+                (profile.books || []).forEach(book => {
+                    const li = document.createElement('li');
+                    li.innerText = book;
+                    booksUl.appendChild(li);
+                });
+            } else {
+                alert('Failed to load profile.');
+                window.location.href = 'index.html';
+            }
         });
 
         function showEditProfile() {
@@ -45,24 +68,31 @@
 
             document.getElementById('editProfileName').value = currentUser.name || '';
             document.getElementById('editProfileBio').value = currentUser.bio || '';
+            document.getElementById('editProfileAddress').value = currentUser.address || '';
+            document.getElementById('editProfileBooks').value = (currentUser.books || []).join(', ');
         }
 
         async function updateProfile() {
             const name = document.getElementById('editProfileName').value;
             const bio = document.getElementById('editProfileBio').value;
+            const address = document.getElementById('editProfileAddress').value;
+            const books = document.getElementById('editProfileBooks').value.split(',').map(book => book.trim());
 
             const response = await fetch('/update-profile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: currentUser.username, name, bio }),
+                body: JSON.stringify({ username: currentUser.username, name, bio, address, books }),
             });
+
             if (response.ok) {
                 currentUser.name = name;
                 currentUser.bio = bio;
+                currentUser.address = address;
+                currentUser.books = books;
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 showProfileView();
             } else {
-                alert('Failed to update profile');
+                alert('Failed to update profile.');
             }
         }
 
@@ -72,6 +102,15 @@
 
             document.getElementById('viewProfileName').innerText = currentUser.name || 'No name set';
             document.getElementById('viewProfileBio').innerText = currentUser.bio || 'No bio set';
+            document.getElementById('viewProfileAddress').innerText = currentUser.address || 'No address set';
+
+            const booksUl = document.getElementById('viewProfileBooks');
+            booksUl.innerHTML = '';
+            (currentUser.books || []).forEach(book => {
+                const li = document.createElement('li');
+                li.innerText = book;
+                booksUl.appendChild(li);
+            });
         }
     </script>
 </body>
