@@ -31,15 +31,15 @@
             if (response.ok) {
                 currentUser = data.user;
                 alert('Login successful');
-                showProfile();
+                showProfileView();
             } else {
                 alert(data.message || 'Login failed');
             }
         }
 
         async function updateProfile() {
-            const name = document.getElementById('profileName').value;
-            const bio = document.getElementById('profileBio').value;
+            const name = document.getElementById('editProfileName').value;
+            const bio = document.getElementById('editProfileBio').value;
 
             const response = await fetch('/update-profile', {
                 method: 'POST',
@@ -47,17 +47,35 @@
                 body: JSON.stringify({ username: currentUser.username, name, bio })
             });
             alert(await response.text());
+
+            if (response.ok) {
+                currentUser.name = name;
+                currentUser.bio = bio;
+                showProfileView();
+            }
         }
 
-        function showProfile() {
+        function showProfileView() {
             document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('profileForm').style.display = 'block';
-            document.getElementById('profileName').value = currentUser.name || '';
-            document.getElementById('profileBio').value = currentUser.bio || '';
+            document.getElementById('profileEditForm').style.display = 'none';
+            document.getElementById('profileView').style.display = 'block';
+
+            document.getElementById('viewProfileName').innerText = currentUser.name || 'No name set';
+            document.getElementById('viewProfileBio').innerText = currentUser.bio || 'No bio set';
+        }
+
+        function showEditProfileForm() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('profileView').style.display = 'none';
+            document.getElementById('profileEditForm').style.display = 'block';
+
+            document.getElementById('editProfileName').value = currentUser.name || '';
+            document.getElementById('editProfileBio').value = currentUser.bio || '';
         }
     </script>
 </head>
 <body>
+    <!-- Login and Registration -->
     <div id="loginForm">
         <h2>Register</h2>
         <input type="text" id="regUsername" placeholder="Username" />
@@ -70,11 +88,21 @@
         <button onclick="login()">Login</button>
     </div>
 
-    <div id="profileForm" style="display: none;">
-        <h2>Profile</h2>
-        <input type="text" id="profileName" placeholder="Name" />
-        <textarea id="profileBio" placeholder="Bio"></textarea>
+    <!-- Profile View -->
+    <div id="profileView" style="display: none;">
+        <h2>Your Profile</h2>
+        <p><strong>Name:</strong> <span id="viewProfileName"></span></p>
+        <p><strong>Bio:</strong> <span id="viewProfileBio"></span></p>
+        <button onclick="showEditProfileForm()">Edit Profile</button>
+    </div>
+
+    <!-- Edit Profile -->
+    <div id="profileEditForm" style="display: none;">
+        <h2>Edit Profile</h2>
+        <input type="text" id="editProfileName" placeholder="Name" />
+        <textarea id="editProfileBio" placeholder="Bio"></textarea>
         <button onclick="updateProfile()">Save Profile</button>
+        <button onclick="showProfileView()">Cancel</button>
     </div>
 </body>
 </html>
