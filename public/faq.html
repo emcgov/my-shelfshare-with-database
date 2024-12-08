@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Answers to some of our most frequently asked questions.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>ShelfShare | FAQs</title>
+        <link rel="icon" type="image/x-icon" href="icon.png">
+        <link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style type="text/css">
+            .faq-container {
+                max-width: 800px;
+                padding: 20px 20% 50px 20%;
+                text-align: justify;
+                line-height: 1.6;
+            }
+            .faq-item {
+                margin-bottom: 20px;
+                cursor: pointer;
+            }
+            .faq-question {
+                font-size: 20px;
+                font-weight: bold;
+                color: #4C4C4C;
+                margin: 0;
+                transition: color 0.3s ease;
+            }
+            .faq-question:hover {
+                color: #3A7CA5;
+            }
+            .faq-answer {
+                display: none;
+                margin-top: 10px;
+                color: #6E6E6E;
+                font-size: 16px;
+                overflow: hidden;
+                transition: max-height 0.5s ease, opacity 0.5s ease;
+            }
+            .faq-answer.open {
+                display: block;
+                max-height: 200px; /* Adjust according to content length */
+                opacity: 1;
+            }
+            .faq-answer.closed {
+                max-height: 0;
+                opacity: 0;
+            }
+
+            h1 {
+                padding-top: 50px;
+                padding-bottom: 20px;
+                text-align: center;
+            }
+            
+            @media (max-width: 600px) {
+                .faq-container {
+                    padding: 20px 50px 20px 50px;
+                }
+            }
+        </style>
+
+        <script>
+            function toggleAnswer(id) {
+              const answer = document.getElementById(id);
+        
+              if (answer.classList.contains('open')) {
+                answer.classList.remove('open');
+                answer.classList.add('closed');
+              } else {
+                answer.classList.remove('closed');
+                answer.classList.add('open');
+              }
+            }
+        </script>
+
+        <!-- Header -->
+        <script src="header.js"></script>
+    </head>
+
+    <body>
+        <div class="faq-container">
+            <h1>Frequently Asked Questions</h1>
+            
+            <div class="faq-item" onclick="toggleAnswer('faq1')">
+                <p class="faq-question">What is Shelf Share?</p>
+                <p class="faq-answer closed" id="faq1">Shelf Share is a platform for book enthusiasts to swap books with others in their community, promoting sustainability and shared knowledge.</p>
+            </div>
+        
+            <div class="faq-item" onclick="toggleAnswer('faq2')">
+                <p class="faq-question">How does the swapping process work?</p>
+                <p class="faq-answer closed" id="faq2">You can list books you'd like to share and browse books from others. Once you find a match, arrange a swap through the platform!</p>
+            </div>
+        
+            <div class="faq-item" onclick="toggleAnswer('faq3')">
+                <p class="faq-question">Is there a fee to join Shelf Share?</p>
+                <p class="faq-answer closed" id="faq3">No, joining Shelf Share is completely free. Some users may choose to negotiate shipping or delivery costs for swaps.</p>
+            </div>
+        
+            <div class="faq-item" onclick="toggleAnswer('faq4')">
+                <p class="faq-question">Can I swap books internationally?</p>
+                <p class="faq-answer closed" id="faq4">Yes, international swaps are possible. Be sure to consider shipping times and costs when coordinating with other users.</p>
+            </div>
+        
+            <div class="faq-item" onclick="toggleAnswer('faq5')">
+                <p class="faq-question">What if I don't find a book I'm looking for?</p>
+                <p class="faq-answer closed" id="faq5">You can set up alerts for specific titles, and Shelf Share will notify you when someone lists them.</p>
+            </div>
+            </div>
+
+        <!-- Footer -->
+        <script src="footer.js"></script>
+    </body>
+</html>
