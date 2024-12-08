@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login and Registration</title>
+    <title>User Profile</title>
     <script>
+        let currentUser = null;
+
         async function register() {
             const username = document.getElementById('regUsername').value;
             const password = document.getElementById('regPassword').value;
@@ -24,19 +26,55 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
+            const data = await response.json();
+
+            if (response.ok) {
+                currentUser = data.user;
+                alert('Login successful');
+                showProfile();
+            } else {
+                alert(data.message || 'Login failed');
+            }
+        }
+
+        async function updateProfile() {
+            const name = document.getElementById('profileName').value;
+            const bio = document.getElementById('profileBio').value;
+
+            const response = await fetch('/update-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser.username, name, bio })
+            });
             alert(await response.text());
+        }
+
+        function showProfile() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('profileForm').style.display = 'block';
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileBio').value = currentUser.bio || '';
         }
     </script>
 </head>
 <body>
-    <h2>Register</h2>
-    <input type="text" id="regUsername" placeholder="Username" />
-    <input type="password" id="regPassword" placeholder="Password" />
-    <button onclick="register()">Register</button>
+    <div id="loginForm">
+        <h2>Register</h2>
+        <input type="text" id="regUsername" placeholder="Username" />
+        <input type="password" id="regPassword" placeholder="Password" />
+        <button onclick="register()">Register</button>
 
-    <h2>Login</h2>
-    <input type="text" id="loginUsername" placeholder="Username" />
-    <input type="password" id="loginPassword" placeholder="Password" />
-    <button onclick="login()">Login</button>
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" />
+        <input type="password" id="loginPassword" placeholder="Password" />
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="profileForm" style="display: none;">
+        <h2>Profile</h2>
+        <input type="text" id="profileName" placeholder="Name" />
+        <textarea id="profileBio" placeholder="Bio"></textarea>
+        <button onclick="updateProfile()">Save Profile</button>
+    </div>
 </body>
 </html>
