@@ -1,1 +1,2 @@
-Deployed at https://echenjones.github.io/shelfshare
+login page is:
+https://my-shelfshare-7988b2fba291.herokuapp.com/
